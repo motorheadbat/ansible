@@ -1,0 +1,9 @@
+---
+- name: Create C:\temp folder on Windows
+  hosts: windows
+  gather_facts: no
+  tasks:
+    - name: Ensure C:\temp folder exists
+      ansible.windows.win_file:
+        path: C:\temp
+        state: directory

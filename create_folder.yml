@@ -5,5 +5,5 @@
   tasks:
     - name: Ensure C:\temp folder exists
       ansible.windows.win_file:
-        path: C:\temp
+        path: C:\temp\file
         state: directory

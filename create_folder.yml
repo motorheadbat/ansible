@@ -1,9 +1,7 @@
----
-- name: Create C:\temp folder on Windows
-  hosts: windows
-  gather_facts: no
+- hosts: win
+
   tasks:
-    - name: Ensure C:\temp folder exists
-      ansible.windows.win_file:
-        path: C:\temp\file
-        state: directory
+   - name: run an executable using win_command
+     win_command: whoami.exe
+   - name: run a cmd command
+     win_command: cmd.exe /c mkdir C:\test

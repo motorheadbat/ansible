@@ -1,5 +1,5 @@
 - name: Play koji se izvršava kao admin
-  hosts: windows
+  hosts: all
   gather_facts: no
   become: yes
   become_method: runas

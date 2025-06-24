@@ -1,0 +1,8 @@
+---
+- name: Kreiranje foldera na Windows hostu
+  hosts: windows
+  tasks:
+    - name: Kreiraj folder C:\temp\test
+      win_file:
+        path: C:\temp\test
+        state: directory

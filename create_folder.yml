@@ -1,9 +1,11 @@
----
-- name: Create a folder on Windows C: drive
-  hosts: windows
-  gather_facts: no
+- name: Whoami
+  hosts: all
+
   tasks:
-    - name: Create test folder
-      ansible.windows.win_file:
-        path: C:\test
-        state: directory
+    - name: find whoami based on credentials supplied
+      win_whoami:
+      register: whoami_base
+
+    - name: output base user
+      debug:
+        msg: "{{ whoami_base.account.account_name }}"

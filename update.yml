@@ -1,5 +1,5 @@
 ---
-- hosts: windows_servers
+- hosts: all
   tasks:
     - name: Install Windows Updates
       ansible.windows.win_updates:

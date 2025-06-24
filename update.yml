@@ -1,13 +1,6 @@
-- name: List available WSUS-approved updates
-  hosts: all
-  gather_facts: no
-  tasks:
-    - name: Get available updates
-      ansible.windows.win_updates:
-        category_names: '*'
-        state: searched
-      register: update_info
-
-    - name: Show available updates
-      debug:
-        var: update_info.updates
+- name: Run PowerShell to check for updates
+  win_shell: |
+    Install-Module PSWindowsUpdate -Force -Confirm:$false
+    Import-Module PSWindowsUpdate
+    Get-WindowsUpdate -AcceptAll -IgnoreReboot -WhatIf
+  register: update_check

@@ -1,15 +1,14 @@
 ---
-- name: Check Windows Updates using PowerShell
+- name: Check available Windows Updates using PSWindowsUpdate
   hosts: all
   gather_facts: no
   tasks:
-    - name: Run PowerShell to check for updates
+    - name: List available updates
       win_shell: |
-        Install-Module PSWindowsUpdate -Force -Confirm:$false
         Import-Module PSWindowsUpdate
-        Get-WindowsUpdate -AcceptAll -IgnoreReboot -WhatIf
-      register: update_check
+        Get-WindowsUpdate -AcceptAll -IgnoreReboot -WhatIf | Out-String
+      register: update_result
 
-    - name: Show update check results
+    - name: Show available updates
       debug:
-        var: update_check.stdout_lines
+        var: update_result.stdout_lines

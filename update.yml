@@ -1,6 +1,6 @@
 ---
 - name: Install all available Windows Updates
-  hosts: windows
+  hosts: all
   gather_facts: no
   tasks:
     - name: Install all available updates and reboot if needed

@@ -1,6 +1,15 @@
-- name: Run PowerShell to check for updates
-  win_shell: |
-    Install-Module PSWindowsUpdate -Force -Confirm:$false
-    Import-Module PSWindowsUpdate
-    Get-WindowsUpdate -AcceptAll -IgnoreReboot -WhatIf
-  register: update_check
+---
+- name: Check Windows Updates using PowerShell
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Run PowerShell to check for updates
+      win_shell: |
+        Install-Module PSWindowsUpdate -Force -Confirm:$false
+        Import-Module PSWindowsUpdate
+        Get-WindowsUpdate -AcceptAll -IgnoreReboot -WhatIf
+      register: update_check
+
+    - name: Show update check results
+      debug:
+        var: update_check.stdout_lines

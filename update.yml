@@ -1,17 +1,15 @@
 ---
-- name: List downloaded but not installed updates
-  hosts: all
+- name: Install all available Windows Updates
+  hosts: windows
   gather_facts: no
   tasks:
-    - name: Check pending install updates
-      win_shell: |
-        $session = New-Object -ComObject Microsoft.Update.Session
-        $searcher = $session.CreateUpdateSearcher()
-        $searchResult = $searcher.Search("IsInstalled=0 and IsDownloaded=1")
-        $titles = $searchResult.Updates | ForEach-Object { $_.Title }
-        $titles -join "`n"
-      register: pending_updates
+    - name: Install all available updates and reboot if needed
+      ansible.windows.win_updates:
+        category_names: ['CriticalUpdates', 'SecurityUpdates', 'UpdateRollups']
+        state: installed
+        reboot: yes
+      register: update_result
 
-    - name: Show pending install updates
+    - name: Show update installation result
       debug:
-        var: pending_updates.stdout_lines
+        var: update_result

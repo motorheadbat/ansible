@@ -1,13 +1,4 @@
----
-- name: Prikaz trenutnog hostname-a
-  hosts: linux
-  gather_facts: no
-
-  tasks:
-    - name: Prikaži hostname
-      command: hostname
-      register: hostname_output
-
-    - name: Ispiši hostname
-      debug:
-        var: hostname_output.stdout
+- name: Install all updates and reboot as many times as needed
+  ansible.windows.win_updates:
+    category_names: '*'
+    reboot: true

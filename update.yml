@@ -6,8 +6,6 @@
       ansible.windows.win_updates:
         category_names: '*'
         reboot: true
-        accept_all: true
-        log_path: C:\ansible\update_log.txt
       register: update_result
 
     - name: Show update result

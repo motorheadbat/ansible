@@ -1,6 +1,6 @@
 ---
 - name: Kreiranje foldera na Windows hostu
-  hosts: windows
+  hosts: all
   tasks:
     - name: Kreiraj folder C:\temp\test
       win_file:

@@ -1,6 +1,6 @@
 ---
 - name: Sync WSUS and install available updates
-  hosts: windows
+  hosts: all
   gather_facts: no
   tasks:
     - name: Force WSUS detection

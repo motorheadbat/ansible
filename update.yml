@@ -1,11 +1,18 @@
 ---
-- name: Install all available Windows Updates
-  hosts: all
+- name: Sync WSUS and install available updates
+  hosts: windows
   gather_facts: no
   tasks:
-    - name: Install all available updates and reboot if needed
+    - name: Force WSUS detection
+      win_shell: wuauclt /detectnow
+
+    - name: Wait 60 seconds for WSUS sync
+      pause:
+        seconds: 60
+
+    - name: Install available WSUS-approved updates and reboot if needed
       ansible.windows.win_updates:
-        category_names: ['CriticalUpdates', 'SecurityUpdates', 'UpdateRollups']
+        category_names: ['CriticalUpdates', 'SecurityUpdates', 'UpdateRollups', 'Updates']
         state: installed
         reboot: yes
       register: update_result

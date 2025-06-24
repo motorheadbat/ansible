@@ -1,22 +1,13 @@
----
-- name: Sync WSUS and install available updates
-  hosts: all
+- name: Play koji se izvršava kao admin
+  hosts: windows
   gather_facts: no
+  become: yes
+  become_method: runas
+  become_user: Administrator
   tasks:
-    - name: Force WSUS detection
-      win_shell: wuauclt /detectnow
-
-    - name: Wait 60 seconds for WSUS sync
-      pause:
-        seconds: 60
-
-    - name: Install available WSUS-approved updates and reboot if needed
+    - name: Primer - instaliraj update
       ansible.windows.win_updates:
         category_names: ['CriticalUpdates', 'SecurityUpdates', 'UpdateRollups', 'Updates']
         state: installed
         reboot: yes
       register: update_result
-
-    - name: Show update installation result
-      debug:
-        var: update_result

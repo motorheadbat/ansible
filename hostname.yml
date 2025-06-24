@@ -1,0 +1,13 @@
+---
+- name: Prikaz trenutnog hostname-a
+  hosts: linux
+  gather_facts: no
+
+  tasks:
+    - name: Prikaži hostname
+      command: hostname
+      register: hostname_output
+
+    - name: Ispiši hostname
+      debug:
+        var: hostname_output.stdout

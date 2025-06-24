@@ -1,9 +1,11 @@
----
-- name: Install all Windows updates and reboot as needed
-  hosts: all
-  gather_facts: no
-  tasks:
-    - name: Install all updates and reboot as many times as needed
-      ansible.windows.win_updates:
-        category_names: '*'
-        reboot: true
+- name: Install all WSUS-approved updates and reboot as needed
+  ansible.windows.win_updates:
+    category_names: '*'
+    reboot: true
+    accept_all: true
+    log_path: C:\ansible\update_log.txt
+  register: update_result
+
+- name: Show update result
+  debug:
+    var: update_result

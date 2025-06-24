@@ -1,14 +1,17 @@
 ---
-- name: Check available Windows Updates using PSWindowsUpdate
+- name: List downloaded but not installed updates
   hosts: all
   gather_facts: no
   tasks:
-    - name: List available updates
+    - name: Check pending install updates
       win_shell: |
-        Import-Module PSWindowsUpdate
-        Get-WindowsUpdate -AcceptAll -IgnoreReboot -WhatIf | Out-String
-      register: update_result
+        $session = New-Object -ComObject Microsoft.Update.Session
+        $searcher = $session.CreateUpdateSearcher()
+        $searchResult = $searcher.Search("IsInstalled=0 and IsDownloaded=1")
+        $titles = $searchResult.Updates | ForEach-Object { $_.Title }
+        $titles -join "`n"
+      register: pending_updates
 
-    - name: Show available updates
+    - name: Show pending install updates
       debug:
-        var: update_result.stdout_lines
+        var: pending_updates.stdout_lines

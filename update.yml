@@ -1,6 +1,6 @@
 ---
 - name: Force WSUS updates via PowerShell
-  hosts: windows_servers
+  hosts: all
   gather_facts: no
   tasks:
 

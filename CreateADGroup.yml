@@ -1,6 +1,6 @@
 ---
 - name: Kreiranje AD grupe "test" sa PowerShell preko WinRM
-  hosts: Management Servers
+  hosts: Management_Servers
   gather_facts: no
   tasks:
     - name: Kreiraj AD grupu preko PowerShell-a

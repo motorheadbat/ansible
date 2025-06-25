@@ -1,16 +1,22 @@
 ---
-- name: Force WSUS updates via PowerShell
+- name: Install and run PSWindowsUpdate module
   hosts: all
   gather_facts: no
   tasks:
 
-    - name: Trigger WSUS scan and install
+    - name: Install PSWindowsUpdate module
       win_shell: |
-        UsoClient.exe StartScan
-        UsoClient.exe StartDownload
-        UsoClient.exe StartInstall
-        Start-Sleep -Seconds 60
-        $RebootRequired = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue)
-        if ($RebootRequired) {
-            Restart-Computer -Force
-        }
+        Install-PackageProvider -Name NuGet -Force
+        Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+        Install-Module -Name PSWindowsUpdate -Force
+
+    - name: Import module and run Windows Update (using WSUS)
+      win_shell: |
+        Import-Module PSWindowsUpdate
+        Get-WindowsUpdate -AcceptAll -Install -IgnoreReboot
+
+    - name: Reboot if required
+      win_reboot:
+        reboot_timeout: 1800
+        test_command: '[System.IO.File]::Exists("C:\Windows\Temp\RebootRequired.flag")'
+      register: reboot_result

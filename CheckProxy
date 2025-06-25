@@ -1,0 +1,13 @@
+---
+- name: Show WinHTTP proxy on Windows hosts
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Set WinHTTP proxy using netsh
+      ansible.windows.win_shell: >
+        netsh winhttp show proxy
+      register: netsh_result
+
+    - name: Show command output
+      debug:
+        var: netsh_result.stdout

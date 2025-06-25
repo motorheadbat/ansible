@@ -1,8 +1,7 @@
 ---
-- name: Install Windows Updates via WSUS
-  hosts: all
+- name: Install Windows Updates via WSUS on Windows Server 2016
+  hosts: windows_servers
   gather_facts: false
-  become: yes
   tasks:
     - name: Install approved updates from WSUS
       ansible.windows.win_updates:
@@ -12,8 +11,8 @@
           - CriticalUpdates
           - SecurityUpdates
           - UpdateRollups
-        accept_list: []   # Optional: Add KBs or patterns
-        reject_list: []   # Optional: Exclude specific updates
+        accept_list: []
+        reject_list: []
         reboot: true
         reboot_timeout: 1800
         skip_optional: true

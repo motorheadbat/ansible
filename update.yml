@@ -1,9 +1,10 @@
----
 - name: Install and run PSWindowsUpdate module
   hosts: all
   gather_facts: no
+  become: yes                  # <== OVDE
+  become_method: runas         # <== OVDE
+  become_user: SYSTEM          # može i 'Administrator', ali SYSTEM je još "jači"
   tasks:
-
     - name: Import module and run Windows Update (using WSUS)
       win_shell: |
         Import-Module PSWindowsUpdate

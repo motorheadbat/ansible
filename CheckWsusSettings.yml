@@ -1,6 +1,6 @@
 ---
 - name: Check WSUS configuration on Windows hosts
-  hosts: all
+  hosts: windows
   gather_facts: no
   tasks:
 
@@ -22,42 +22,46 @@
       debug:
         var: http_status.stdout
 
-    - name: Check WUServer registry value
-      ansible.windows.win_reg_stat:
-        path: HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate
+    - name: Query WUServer registry value
+      ansible.windows.win_reg_query:
+        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
         name: WUServer
       register: wuserver_key
+      ignore_errors: yes
 
     - name: Show WUServer
       debug:
-        msg: "WUServer = {{ wuserver_key.value if wuserver_key.exists else 'Not found' }}"
+        msg: "WUServer = {{ wuserver_key.value if wuserver_key.value is defined else 'Not found' }}"
 
-    - name: Check WUStatusServer registry value
-      ansible.windows.win_reg_stat:
-        path: HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate
+    - name: Query WUStatusServer registry value
+      ansible.windows.win_reg_query:
+        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
         name: WUStatusServer
       register: wustatus_key
+      ignore_errors: yes
 
     - name: Show WUStatusServer
       debug:
-        msg: "WUStatusServer = {{ wustatus_key.value if wustatus_key.exists else 'Not found' }}"
+        msg: "WUStatusServer = {{ wustatus_key.value if wustatus_key.value is defined else 'Not found' }}"
 
-    - name: Check UseWUServer registry value
-      ansible.windows.win_reg_stat:
-        path: HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU
+    - name: Query UseWUServer registry value
+      ansible.windows.win_reg_query:
+        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
         name: UseWUServer
       register: use_wuserver_key
+      ignore_errors: yes
 
     - name: Show UseWUServer
       debug:
-        msg: "UseWUServer = {{ use_wuserver_key.value if use_wuserver_key.exists else 'Not found' }}"
+        msg: "UseWUServer = {{ use_wuserver_key.value if use_wuserver_key.value is defined else 'Not found' }}"
 
-    - name: Check AUOptions registry value
-      ansible.windows.win_reg_stat:
-        path: HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU
+    - name: Query AUOptions registry value
+      ansible.windows.win_reg_query:
+        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
         name: AUOptions
       register: auoptions_key
+      ignore_errors: yes
 
     - name: Show AUOptions
       debug:
-        msg: "AUOptions = {{ auoptions_key.value if auoptions_key.exists else 'Not found' }}"
+        msg: "AUOptions = {{ auoptions_key.value if auoptions_key.value is defined else 'Not found' }}"

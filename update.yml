@@ -1,13 +1,16 @@
-- name: Play koji se izvršava kao admin
-  hosts: all
+---
+- name: Force WSUS updates via PowerShell
+  hosts: windows_servers
   gather_facts: no
-  become: yes
-  become_method: runas
-  become_user: Administrator
   tasks:
-    - name: Primer - instaliraj update
-      ansible.windows.win_updates:
-        category_names: ['CriticalUpdates', 'SecurityUpdates', 'UpdateRollups', 'Updates']
-        state: installed
-        reboot: yes
-      register: update_result
+
+    - name: Trigger WSUS scan and install
+      win_shell: |
+        UsoClient.exe StartScan
+        UsoClient.exe StartDownload
+        UsoClient.exe StartInstall
+        Start-Sleep -Seconds 60
+        $RebootRequired = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired" -ErrorAction SilentlyContinue)
+        if ($RebootRequired) {
+            Restart-Computer -Force
+        }

@@ -1,6 +1,6 @@
 ---
 - name: Check WSUS configuration on Windows hosts
-  hosts: windows
+  hosts: all
   gather_facts: no
   tasks:
 

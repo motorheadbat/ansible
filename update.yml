@@ -4,12 +4,6 @@
   gather_facts: no
   tasks:
 
-    - name: Install PSWindowsUpdate module
-      win_shell: |
-        Install-PackageProvider -Name NuGet -Force
-        Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
-        Install-Module -Name PSWindowsUpdate -Force
-
     - name: Import module and run Windows Update (using WSUS)
       win_shell: |
         Import-Module PSWindowsUpdate

@@ -1,16 +1,26 @@
-- name: Install and run PSWindowsUpdate module
+---
+- name: Install Windows Updates via WSUS
   hosts: all
-  gather_facts: no
+  gather_facts: false
   become: yes
-  become_method: runas
-  become_user: SYSTEM
-
   tasks:
-    - name: Install and run Windows Updates (via WSUS)
-      win_shell: |
-        Import-Module PSWindowsUpdate
-        Get-WindowsUpdate -AcceptAll -Install -IgnoreReboot
-
-    - name: Reboot immediately after update
-      win_reboot:
+    - name: Install approved updates from WSUS
+      ansible.windows.win_updates:
+        state: installed
+        server_selection: managed_server
+        category_names:
+          - CriticalUpdates
+          - SecurityUpdates
+          - UpdateRollups
+        reboot: true
         reboot_timeout: 1800
+        skip_optional: true
+        _operation: start
+        _operation_options:
+          accept_list: []  # Optional: Add KBs or regex for updates you specifically want
+          reject_list: []  # Optional: Add KBs or regex for updates to exclude
+      register: update_result
+
+    - name: Show updates that were installed
+      debug:
+        var: update_result

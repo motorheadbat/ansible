@@ -1,17 +1,16 @@
 - name: Install and run PSWindowsUpdate module
   hosts: all
   gather_facts: no
-  become: yes                  # <== OVDE
-  become_method: runas         # <== OVDE
-  become_user: SYSTEM          # može i 'Administrator', ali SYSTEM je još "jači"
+  become: yes
+  become_method: runas
+  become_user: SYSTEM
+
   tasks:
-    - name: Import module and run Windows Update (using WSUS)
+    - name: Install and run Windows Updates (via WSUS)
       win_shell: |
         Import-Module PSWindowsUpdate
         Get-WindowsUpdate -AcceptAll -Install -IgnoreReboot
 
-    - name: Reboot if required
+    - name: Reboot immediately after update
       win_reboot:
         reboot_timeout: 1800
-        test_command: '[System.IO.File]::Exists("C:\Windows\Temp\RebootRequired.flag")'
-      register: reboot_result

@@ -1,0 +1,5 @@
+- name: Run playbook only on test group
+  hosts: test
+  tasks:
+    - name: Run some command on test hosts
+      win_command: echo Hello from test group

@@ -2,4 +2,4 @@
   hosts: FSS
   tasks:
     - name: Run some command on test hosts
-      win_command: echo Hello from test group
+      win_shell: echo Hello from test group

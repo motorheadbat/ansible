@@ -24,7 +24,7 @@
 
     - name: Check WUServer registry value
       ansible.windows.win_reg_stat:
-        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
         name: WUServer
       register: wuserver_key
       ignore_errors: yes

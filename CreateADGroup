@@ -1,0 +1,16 @@
+---
+- name: Kreiranje AD grupe "test" sa PowerShell preko WinRM
+  hosts: management_server
+  gather_facts: no
+  tasks:
+    - name: Kreiraj AD grupu preko PowerShell-a
+      ansible.windows.win_shell: |
+        Import-Module ActiveDirectory
+        $groupName = "test"
+        $path = "OU=YU,OU=BAT Groups,DC=Global,DC=batgen,DC=com"
+        if (-not (Get-ADGroup -Filter "Name -eq '$groupName'" -ErrorAction SilentlyContinue)) {
+          New-ADGroup -Name $groupName -GroupScope Global -GroupCategory Security -Path $path
+          Write-Output "Grupa kreirana"
+        } else {
+          Write-Output "Grupa već postoji"
+        }

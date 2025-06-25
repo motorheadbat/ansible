@@ -24,7 +24,7 @@
 
     - name: Check WUServer registry value
       ansible.windows.win_reg_stat:
-        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        path: HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate
         name: WUServer
       register: wuserver_key
 
@@ -34,7 +34,7 @@
 
     - name: Check WUStatusServer registry value
       ansible.windows.win_reg_stat:
-        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        path: HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate
         name: WUStatusServer
       register: wustatus_key
 
@@ -44,7 +44,7 @@
 
     - name: Check UseWUServer registry value
       ansible.windows.win_reg_stat:
-        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        path: HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU
         name: UseWUServer
       register: use_wuserver_key
 
@@ -54,7 +54,7 @@
 
     - name: Check AUOptions registry value
       ansible.windows.win_reg_stat:
-        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        path: HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU
         name: AUOptions
       register: auoptions_key
 

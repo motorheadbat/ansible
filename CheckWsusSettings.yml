@@ -1,0 +1,63 @@
+---
+- name: Check WSUS configuration on Windows hosts
+  hosts: all
+  gather_facts: no
+  tasks:
+
+    - name: Test connectivity - ping wsus_AZ
+      ansible.windows.win_command: ping -n 4 wsus_AZ
+      register: ping_output
+      ignore_errors: yes
+
+    - name: Show ping result
+      debug:
+        var: ping_output.stdout_lines
+
+    - name: Test HTTP access to WSUS on port 8530
+      ansible.windows.win_command: powershell -Command "try { (Invoke-WebRequest -Uri 'http://wsus_AZ:8530' -UseBasicParsing).StatusCode } catch { $_.Exception.Message }"
+      register: http_status
+      ignore_errors: yes
+
+    - name: Show HTTP access result
+      debug:
+        var: http_status.stdout
+
+    - name: Check WUServer registry value
+      ansible.windows.win_reg_stat:
+        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: WUServer
+      register: wuserver_key
+
+    - name: Show WUServer
+      debug:
+        msg: "WUServer = {{ wuserver_key.value if wuserver_key.exists else 'Not found' }}"
+
+    - name: Check WUStatusServer registry value
+      ansible.windows.win_reg_stat:
+        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate
+        name: WUStatusServer
+      register: wustatus_key
+
+    - name: Show WUStatusServer
+      debug:
+        msg: "WUStatusServer = {{ wustatus_key.value if wustatus_key.exists else 'Not found' }}"
+
+    - name: Check UseWUServer registry value
+      ansible.windows.win_reg_stat:
+        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: UseWUServer
+      register: use_wuserver_key
+
+    - name: Show UseWUServer
+      debug:
+        msg: "UseWUServer = {{ use_wuserver_key.value if use_wuserver_key.exists else 'Not found' }}"
+
+    - name: Check AUOptions registry value
+      ansible.windows.win_reg_stat:
+        path: HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU
+        name: AUOptions
+      register: auoptions_key
+
+    - name: Show AUOptions
+      debug:
+        msg: "AUOptions = {{ auoptions_key.value if auoptions_key.exists else 'Not found' }}"

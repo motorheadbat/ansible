@@ -12,13 +12,11 @@
           - CriticalUpdates
           - SecurityUpdates
           - UpdateRollups
+        accept_list: []   # Optional: Add KBs or patterns
+        reject_list: []   # Optional: Exclude specific updates
         reboot: true
         reboot_timeout: 1800
         skip_optional: true
-        _operation: start
-        _operation_options:
-          accept_list: []  # Optional: Add KBs or regex for updates you specifically want
-          reject_list: []  # Optional: Add KBs or regex for updates to exclude
       register: update_result
 
     - name: Show updates that were installed

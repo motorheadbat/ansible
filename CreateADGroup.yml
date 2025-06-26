@@ -10,13 +10,18 @@
 
         $groupName = "test"
         $ouPath = "OU=YU,OU=BAT Groups,DC=Global,DC=batgen,DC=com"
-
-        if (-not (Get-ADGroup -Filter "Name -eq '$groupName'" -SearchBase $ouPath -ErrorAction SilentlyContinue)) {
-            New-ADGroup -Name $groupName -SamAccountName $groupName -GroupScope Global -GroupCategory Security -Path $ouPath
-            Write-Output "CREATED: Grupa '$groupName' je uspešno kreirana."
+        $existingGroup = Get-ADGroup -LDAPFilter "(cn=$groupName)" -SearchBase $ouPath -ErrorAction SilentlyContinue
+        if (-not $existingGroup) {
+            New-ADGroup -Name $groupName `
+                        -SamAccountName $groupName `
+                        -GroupScope Global `
+                        -GroupCategory Security `
+                        -Path $ouPath
+            Write-Host "✅ Grupa '$groupName' je uspešno kreirana u $ouPath"
         } else {
-            Write-Output "EXISTS: Grupa '$groupName' već postoji."
+            Write-Host "ℹ Grupa '$groupName' već postoji u $ouPath"
         }
+     
       register: ad_group_result
 
     - name: Prikaži rezultat

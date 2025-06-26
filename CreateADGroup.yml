@@ -16,7 +16,12 @@
                         -GroupScope Global `
                         -GroupCategory Security `
                         -Path $ouPath
-            Write-Host "✅ Grupa '$groupName' je uspešno kreirana u $ouPath"
+            Write-Output "CREATED: Grupa '$groupName' je uspešno kreirana u OU $ouPath"
         } else {
-            Write-Host "ℹ Grupa '$groupName' već postoji u $ouPath"
+            Write-Output "EXISTS: Grupa '$groupName' već postoji u OU $ouPath"
         }
+      register: ad_group_result
+
+    - name: Prikaži rezultat kreiranja grupe
+      ansible.builtin.debug:
+        msg: "{{ ad_group_result.stdout }}"

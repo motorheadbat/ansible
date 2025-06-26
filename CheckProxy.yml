@@ -1,6 +1,6 @@
 ---
 - name: Show WinHTTP proxy on Windows hosts
-  hosts: all
+  hosts: FSS
   gather_facts: no
   tasks:
     - name: Set WinHTTP proxy using netsh

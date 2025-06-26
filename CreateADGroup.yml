@@ -1,26 +1,24 @@
-- name: Kreiraj AD grupu "test"
+- name: Kreiraj AD grupu "test" bez DC i bez -NoProfile
   hosts: Management_Servers
   gather_facts: no
 
   tasks:
-    - name: Pokreni PowerShell komandu za kreiranje AD grupe
+    - name: Pokreni PowerShell komandu za proveru i kreiranje AD grupe
       ansible.windows.win_shell: |
-            Import-Module ActiveDirectory
-            Start-Sleep -Seconds 2
+        Import-Module ActiveDirectory
+        Start-Sleep -Seconds 2
 
-            $groupName = 'test'
-            $ouPath = 'OU=YU,OU=BAT Groups,DC=Global,DC=batgen,DC=com'
-            $dc = '10.176.26.61'
+        $groupName = "test"
+        $ouPath = "OU=YU,OU=BAT Groups,DC=Global,DC=batgen,DC=com"
 
-            if (-not (Get-ADGroup -Server $dc -Filter \"Name -eq '$groupName'\" -SearchBase $ouPath -ErrorAction SilentlyContinue)) {
-                New-ADGroup -Server $dc -Name $groupName -SamAccountName $groupName -GroupScope Global -GroupCategory Security -Path $ouPath
-                Write-Output \"CREATED: Grupa '$groupName' je uspešno kreirana.\"
-            } else {
-                Write-Output \"EXISTS: Grupa '$groupName' već postoji.\"
-            }
-        "
-      register: ps_out
+        if (-not (Get-ADGroup -Filter "Name -eq '$groupName'" -SearchBase $ouPath -ErrorAction SilentlyContinue)) {
+            New-ADGroup -Name $groupName -SamAccountName $groupName -GroupScope Global -GroupCategory Security -Path $ouPath
+            Write-Output "CREATED: Grupa '$groupName' je uspešno kreirana."
+        } else {
+            Write-Output "EXISTS: Grupa '$groupName' već postoji."
+        }
+      register: ad_group_result
 
-    - name: Prikaži status komande
-      ansible.builtin.debug:
-        var: ps_out.stdout_lines
+    - name: Prikaži rezultat
+      debug:
+        var: ad_group_result.stdout_lines

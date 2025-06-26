@@ -1,6 +1,6 @@
 ---
-- name: Kreiranje AD grupe "test" sa PowerShell preko WinRM
-  hosts: Management_Servers
+- name: Kreiraj AD grupu lokalno sa RSAT-om
+  hosts: management_server
   gather_facts: no
   tasks:
     - name: Kreiraj AD grupu preko PowerShell-a
@@ -8,7 +8,7 @@
         Import-Module ActiveDirectory
         $groupName = "test"
         $path = "OU=YU,OU=BAT Groups,DC=Global,DC=batgen,DC=com"
-        if (-not (Get-ADGroup -Filter "Name -eq '$groupName'" -ErrorAction SilentlyContinue)) {
+        if (-not (Get-ADGroup -LDAPFilter "(cn=$groupName)" -ErrorAction SilentlyContinue)) {
           New-ADGroup -Name $groupName -GroupScope Global -GroupCategory Security -Path $path
           Write-Output "Grupa kreirana"
         } else {

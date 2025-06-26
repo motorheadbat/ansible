@@ -1,6 +1,6 @@
 ---
 - name: Kreiraj AD grupu sa PowerShell-a lokalno preko Ansible-a
-  hosts: Management_servers
+  hosts: 	Management_Servers
   gather_facts: no
   tasks:
     - name: Kreiraj AD grupu ako ne postoji

@@ -5,7 +5,6 @@
   tasks:
     - name: Pokreni PowerShell komandu za kreiranje AD grupe
       ansible.windows.win_shell: |
-        powershell -NoProfile -ExecutionPolicy Bypass -Command "& {
             Import-Module ActiveDirectory
             Start-Sleep -Seconds 2
 
@@ -19,7 +18,7 @@
             } else {
                 Write-Output \"EXISTS: Grupa '$groupName' već postoji.\"
             }
-        }"
+        "
       register: ps_out
 
     - name: Prikaži status komande

@@ -1,6 +1,6 @@
 ---
 - name: Kreiraj AD grupu lokalno sa RSAT-om
-  hosts: management_server
+  hosts: Management_server
   gather_facts: no
   tasks:
     - name: Kreiraj AD grupu preko PowerShell-a

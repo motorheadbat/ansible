@@ -6,7 +6,7 @@
     - name: Pokreni PowerShell komandu za proveru i kreiranje AD grupe
       ansible.windows.win_shell: |
         Import-Module ActiveDirectory
-        Start-Sleep -Seconds 2
+        Start-Sleep -Seconds 10
 
         $groupName = "test"
         $ouPath = "OU=YU,OU=BAT Groups,DC=Global,DC=batgen,DC=com"

@@ -7,8 +7,16 @@
     network_share_folder: "\\\\10.176.26.59\\apps\\WINDOWS 10\\Andrija"
     iso_filename: "VMware-tools-windows-arm-13.0.0-24696409.iso"
     dest_folder: "C:\\Temp\\VMware"
+    share_user: "10.176.26.59\\Administrator"   # Use correct domain or machine name
+    share_password: "YourPasswordHere"
 
   tasks:
+    - name: Map network share with credentials
+      ansible.windows.win_command: >
+        net use "{{ network_share_folder }}" /user:"{{ share_user }}" "{{ share_password }}"
+      register: net_use_result
+      ignore_errors: yes
+
     - name: Ensure destination directory exists
       ansible.windows.win_file:
         path: "{{ dest_folder }}"
@@ -18,8 +26,8 @@
       ansible.windows.win_command: >
         robocopy "{{ network_share_folder }}" "{{ dest_folder }}" "{{ iso_filename }}" /Z /NFL /NDL /NJH /NJS /NP
       register: robocopy_result
-      ignore_errors: true
+      ignore_errors: yes
 
-    - name: Display robocopy output
+    - name: Show robocopy output
       debug:
         var: robocopy_result.stdout_lines

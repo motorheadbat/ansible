@@ -1,0 +1,23 @@
+---
+- name: Copy VMware files from network location to Windows servers
+  hosts: all
+  gather_facts: no
+  vars:
+    network_path: "\\\\10.176.26.59\apps\WINDOWS 10\Andrija\VMware-tools-windows-arm-13.0.0-24696409.iso" # Double-backslash escaped
+    dest_path: "C:\\Temp\\VMware"
+
+  tasks:
+    - name: Ensure destination directory exists
+      ansible.windows.win_file:
+        path: "{{ dest_path }}"
+        state: directory
+
+    - name: Copy files from network location to local folder
+      ansible.windows.win_command: >
+        robocopy "{{ network_path }}" "{{ dest_path }}" /E /Z /NFL /NDL /NJH /NJS /NP
+      register: robocopy_result
+      ignore_errors: yes
+
+    - name: Display robocopy output
+      debug:
+        var: robocopy_result.stdout_lines

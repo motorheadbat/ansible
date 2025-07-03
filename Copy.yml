@@ -1,9 +1,9 @@
 ---
-- name: Copy VMware files from network location to Windows servers
+- name: Copy VMware ISO from network to local
   hosts: UPIS_Plate
   gather_facts: no
   vars:
-    network_path: "\\\\10.176.26.59\\apps\WINDOWS 10\\Andrija\\VMware-tools-windows-arm-13.0.0-24696409.iso" # Double-backslash escaped
+    network_path: "\\\\10.176.26.59\\apps\\WINDOWS 10\\Andrija\\VMware-tools-windows-arm-13.0.0-24696409.iso"
     dest_path: "C:\\Temp\\VMware"
 
   tasks:
@@ -12,12 +12,12 @@
         path: "{{ dest_path }}"
         state: directory
 
-    - name: Copy files from network location to local folder
+    - name: Copy ISO using robocopy
       ansible.windows.win_command: >
-        robocopy "{{ network_path }}" "{{ dest_path }}" /E /Z /NFL /NDL /NJH /NJS /NP
+        robocopy "{{ network_path | regex_replace('\\\\[^\\\\]+$', '') }}" "{{ dest_path }}" "{{ network_path | regex_replace('^.*\\\\', '') }}" /Z /NFL /NDL /NJH /NJS /NP
       register: robocopy_result
       ignore_errors: yes
 
-    - name: Display robocopy output
+    - name: Show robocopy output
       debug:
         var: robocopy_result.stdout_lines

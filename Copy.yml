@@ -1,6 +1,6 @@
 ---
 - name: Copy VMware files from network location to Windows servers
-  hosts: all
+  hosts: UPIS_Plate
   gather_facts: no
   vars:
     network_path: "\\\\10.176.26.59\\apps\WINDOWS 10\\Andrija\\VMware-tools-windows-arm-13.0.0-24696409.iso" # Double-backslash escaped

@@ -7,8 +7,8 @@
     network_share_folder: "\\\\10.176.26.59\\apps\\WINDOWS 10\\Andrija"
     iso_filename: "VMware-tools-windows-arm-13.0.0-24696409.iso"
     dest_folder: "C:\\Temp\\VMware"
-    share_user: "10.176.26.59\\Administrator"   # Use correct domain or machine name
-    share_password: "YourPasswordHere"
+    share_user: "10.176.26.59\\svc-Ansbile_PRD-YU"   # Use correct domain or machine name
+    share_password: "7j$IbI3PV9Qmkw#8"
 
   tasks:
     - name: Map network share with credentials

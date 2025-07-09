@@ -3,6 +3,6 @@
   gather_facts: no
   tasks:
     - name: Install updates
-    ansible.windows.win_updates:
-    category_names: '*'
-    reboot: true
+      ansible.windows.win_updates:
+        category_names: '*'
+        reboot: true

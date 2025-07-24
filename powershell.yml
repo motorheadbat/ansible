@@ -7,6 +7,7 @@
           echo "Hello World"
           echo "whoami"
           echo "ping 10.176.26.90"
+          ping 8.8.8.8
       register: ps_output
 
     - name: Show PowerShell output

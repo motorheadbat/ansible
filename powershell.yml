@@ -1,7 +1,12 @@
-- name: Run basic PowerShell script
+- name: Run basic PowerShell script and show output
   hosts: UPIS_Plate
   tasks:
     - name: Echo
       ansible.windows.win_powershell:
         script: |
           echo "Hello World"
+      register: ps_output
+
+    - name: Show PowerShell output
+      debug:
+        var: ps_output.output

@@ -1,5 +1,7 @@
 - name: Run basic PowerShell script
   hosts: UPIS_Plate
-  ansible.windows.win_powershell:
-    script: |
-      echo "Hello World"
+  task:
+    -name: Echo
+      ansible.windows.win_powershell:
+        script: |
+          echo "Hello World"

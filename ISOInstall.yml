@@ -21,7 +21,7 @@
 
     - name: Install VMware Tools silently without reboot
       win_shell: |
-        $drive = "{{ vmware_drive.stdout }}"
+        $drive = "{{ vmware_drive.stdout_lines[0] }}"
         Start-Process -FilePath "$drive`:\setup.exe" -ArgumentList '/S /v"/qn REBOOT=ReallySuppress"' -Wait
       args:
         executable: powershell.exe

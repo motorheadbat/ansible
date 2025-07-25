@@ -10,9 +10,11 @@
       args:
         executable: powershell.exe
 
-    - name: Get mounted drive letter
+    - name: Get mounted VMware Tools drive letter
       win_shell: |
-        (Get-Volume -FileSystemLabel "VMware Tools").DriveLetter
+        $image = Get-DiskImage -ImagePath 'C:\temp\ansible\VMware-tools.iso'
+        $volume = ($image | Get-Volume)
+        $volume.DriveLetter
       args:
         executable: powershell.exe
       register: vmware_drive

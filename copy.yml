@@ -1,3 +1,4 @@
+---
 - name: Mount SMB share, create folder and copy file on Windows host
   hosts: test
   gather_facts: no
@@ -21,5 +22,6 @@
         executable: powershell.exe
 
     - name: Disconnect network share
-      win_shell: net use Z: /delete
+      win_shell: |
+        net use Z: /delete
       ignore_errors: yes

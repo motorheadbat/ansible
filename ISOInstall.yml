@@ -10,17 +10,17 @@
       args:
         executable: powershell.exe
 
-    - name: Get mounted VMware Tools drive letter
+    - name: Get CD-ROM drive letter
       win_shell: |
-        (Get-Volume -FileSystemLabel "VMware Tools").DriveLetter
-      register: vmware_drive
+        Get-WmiObject Win32_LogicalDisk | Where-Object { $_.DriveType -eq 5 } | Select-Object -ExpandProperty DeviceID
+      register: cdrom_drive
       args:
         executable: powershell.exe
 
     - name: Install VMware Tools silently without reboot
       win_shell: |
-        $drive = "{{ vmware_drive.stdout_lines[0] }}"
-        Start-Process -FilePath "$drive`:\setup.exe" -ArgumentList '/S /v"/qn REBOOT=ReallySuppress"' -Wait
+        $drive = "{{ cdrom_drive.stdout_lines[0] }}"
+        Start-Process -FilePath "$drive\setup.exe" -ArgumentList '/S /v"/qn REBOOT=ReallySuppress"' -Wait
       args:
         executable: powershell.exe
 

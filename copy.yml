@@ -1,5 +1,5 @@
 ---
-- name: Mount SMB share, create folder and copy file on Windows host
+- name: Mount SMB share and copy file on Windows host
   hosts: Test
   gather_facts: no
   tasks:
@@ -9,19 +9,10 @@
         path: C:\temp\ansible
         state: directory
 
-    - name: Mount network share with credentials
+    - name: Mount network share, copy file, and unmount in same session
       win_shell: |
         net use Z: \\10.176.26.59\apps /user:global\85144917 Start2025!@
-      args:
-        executable: powershell.exe
-
-    - name: Copy ISO file from network share to local folder
-      win_shell: |
         Copy-Item -Path 'Z:\WINDOWS 10\Andrija\Instalacije\VMware-tools-windows-13.0.0-24696409.iso' -Destination 'C:\temp\ansible\VMware-tools.iso' -Force
+        net use Z: /delete
       args:
         executable: powershell.exe
-
-    - name: Disconnect network share
-      win_shell: |
-        net use Z: /delete
-      ignore_errors: yes

@@ -1,33 +1,25 @@
 ---
 - name: Install VMware Tools from ISO without reboot
-  hosts: Test
+  hosts: windows
   gather_facts: no
   tasks:
 
     - name: Mount VMware Tools ISO
       win_shell: |
-        Mount-DiskImage -ImagePath 'C:\temp\ansible\VMware-tools.iso'
+        Mount-DiskImage -ImagePath 'C:\temp\ansible\VMware-tools.iso' -StorageType ISO -PassThru
       args:
         executable: powershell.exe
 
     - name: Get mounted VMware Tools drive letter
       win_shell: |
-        $image = Get-DiskImage -ImagePath 'C:\temp\ansible\VMware-tools.iso'
-        $volume = ($image | Get-Volume)
-        $volume.DriveLetter
+        (Get-Volume -FileSystemLabel "VMware Tools").DriveLetter
+      register: vmware_drive
       args:
         executable: powershell.exe
-      register: vmware_drive
 
     - name: Install VMware Tools silently without reboot
       win_shell: |
-        $drive = "{{ vmware_drive.stdout_lines[0] }}"
+        $drive = "{{ '"' + vmware_drive.stdout_lines[0] + '"' }}"
         Start-Process -FilePath "$drive`:\setup.exe" -ArgumentList '/S /v"/qn REBOOT=ReallySuppress"' -Wait
-      args:
-        executable: powershell.exe
-
-    - name: Dismount VMware Tools ISO
-      win_shell: |
-        Dismount-DiskImage -ImagePath 'C:\temp\ansible\VMware-tools.iso'
       args:
         executable: powershell.exe

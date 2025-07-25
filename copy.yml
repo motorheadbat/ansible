@@ -11,7 +11,7 @@
 
     - name: Mount network share with credentials
       win_shell: |
-        net use Z: \\10.176.26.59\apps /user:global\svc-Ansbile_PRD-YU "7j$IbI3PV9Qmkw#8"
+        net use Z: \\10.176.26.59\apps /user:global\svc-Ansbile_PRD-YU 7j$IbI3PV9Qmkw#8
       args:
         executable: powershell.exe
 

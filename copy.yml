@@ -1,6 +1,6 @@
 ---
 - name: Mount SMB share, create folder and copy file on Windows host
-  hosts: test
+  hosts: Test
   gather_facts: no
   tasks:
 

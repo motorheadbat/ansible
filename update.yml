@@ -2,7 +2,27 @@
   hosts: UPIS_Plate
   gather_facts: no
   tasks:
+
     - name: Install updates
       ansible.windows.win_updates:
         category_names: '*'
         reboot: true
+      register: update_result
+
+    - name: Prikaži instalirane updejte
+      debug:
+        msg: >
+          Instalirani updejti:
+          {% for u in update_result.installed_update_result %}
+            - {{ u.Title }}
+          {% else %}
+            - Nema novih updejtova.
+          {% endfor %}
+
+    - name: Refresh Windows Update status (fix after reboot)
+      win_shell: UsoClient.exe StartScan
+      ignore_errors: yes
+
+    - name: Wait for update detection
+      pause:
+        seconds: 30

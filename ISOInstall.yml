@@ -1,6 +1,6 @@
 ---
 - name: Install VMware Tools from ISO without reboot
-  hosts: windows
+  hosts: test
   gather_facts: no
   tasks:
 

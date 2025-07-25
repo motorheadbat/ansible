@@ -17,7 +17,7 @@
 
     - name: Copy ISO file from network share to local folder
       win_shell: |
-        copy "Z:\WINDOWS 10\Andrija\Instalacije\VMware-tools-windows-13.0.0-24696409.iso" "C:\temp\ansible\VMware-tools.iso" /Y
+        Copy-Item -Path "Z:\WINDOWS 10\Andrija\Instalacije\VMware-tools-windows-13.0.0-24696409.iso" -Destination "C:\temp\ansible\VMware-tools.iso" -Force
       args:
         executable: powershell.exe
 

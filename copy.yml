@@ -1,5 +1,5 @@
 ---
-- name: Mount SMB share and copy file on Windows host
+- name: Mount SMB share and copy folder on Windows host
   hosts: Test
   gather_facts: no
   tasks:
@@ -9,10 +9,10 @@
         path: C:\temp\ansible
         state: directory
 
-    - name: Mount network share, copy file, and unmount in same session
+    - name: Mount network share, copy folder, and unmount in same session
       win_shell: |
-        net use Z: \\10.176.26.59\apps /user:global\85144917 Start2025!@
-        Copy-Item -Path 'Z:\WINDOWS 10\Andrija\Instalacije\VMware-tools-windows-13.0.0-24696409.iso' -Destination 'C:\temp\ansible\VMware-tools.iso' -Force
+        net use Z: \\10.176.26.59\apps /user:global\85144917 "Start2025!@"
+        Copy-Item -Path 'Z:\WINDOWS 10\Andrija\Instalacije\vmwaretools' -Destination 'C:\temp\ansible\vmwaretools' -Recurse -Force
         net use Z: /delete
       args:
         executable: powershell.exe

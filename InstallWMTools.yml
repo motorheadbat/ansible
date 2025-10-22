@@ -5,6 +5,6 @@
     - name: Run VMware Tools setup silently with reboot
       win_shell: |
         $setupPath = 'C:\temp\ansible\vmwaretools\setup.exe'
-        Start-Process -FilePath $setupPath -ArgumentList '/S /v"/qn REBOOT=FORCE"' -Wait
+        Start-Process -FilePath $setupPath -ArgumentList '/S /v"/qn REBOOT=Suppress"' -Wait
       args:
         executable: powershell.exe

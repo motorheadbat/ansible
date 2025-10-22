@@ -1,5 +1,5 @@
 ---
-- name: Install VMware Tools silently without reboot
+- name: Install VMware Tools silently with reboot
   hosts: Test
   gather_facts: no
   tasks:

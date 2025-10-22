@@ -1,5 +1,5 @@
 ---
-- name: Install VMware Tools silently, reboot only if needed
+- name: Install VMware Tools silently without forcing reboot
   hosts: Test
   gather_facts: no
 
@@ -10,7 +10,3 @@
         Start-Process -FilePath $setupPath -ArgumentList '/S /v"/qn"' -Wait
       args:
         executable: powershell.exe
-
-    - name: Reboot if required
-      win_reboot:
-      when: ansible_facts['windows_reboot_pending'] | default(false)

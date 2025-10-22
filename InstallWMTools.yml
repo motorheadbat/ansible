@@ -1,10 +1,12 @@
-- name: Install VMware Tools silently with reboot
+---
+- name: Install VMware Tools silently without reboot
   hosts: Test
   gather_facts: no
+
   tasks:
-    - name: Run VMware Tools setup silently with reboot
+    - name: Run VMware Tools setup silently without reboot
       win_shell: |
         $setupPath = 'C:\temp\ansible\vmwaretools\setup.exe'
-        Start-Process -FilePath $setupPath -ArgumentList '/S /v"/qn REBOOT=Suppress"' -Wait
+        Start-Process -FilePath $setupPath -ArgumentList '/S /v"/qn REBOOT=ReallySuppress"' -Wait
       args:
         executable: powershell.exe

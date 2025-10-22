@@ -1,5 +1,5 @@
 - name: Run basic PowerShell script and show output
-  hosts: UPIS_Plate
+  hosts: all
   tasks:
     - name: Echo
       ansible.windows.win_powershell:

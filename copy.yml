@@ -8,6 +8,11 @@
       win_file:
         path: C:\temp\ansible
         state: directory
+      register: create_folder_output
+
+    - name: Show output of folder creation
+      debug:
+        var: create_folder_output
 
     - name: Mount network share, copy folder, and unmount in same session
       win_shell: |
@@ -16,3 +21,12 @@
         net use Z: /delete
       args:
         executable: powershell.exe
+      register: copy_output
+
+    - name: Show PowerShell command output
+      debug:
+        var: copy_output.stdout_lines
+
+    - name: Show PowerShell error output (if any)
+      debug:
+        var: copy_output.stderr_lines

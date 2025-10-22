@@ -1,6 +1,6 @@
 ---
 - name: Mount SMB share and copy folder on Windows host
-  hosts: Test
+  hosts: all
   gather_facts: no
   tasks:
 
@@ -11,7 +11,7 @@
 
     - name: Mount network share, copy folder, and unmount in same session
       win_shell: |
-        net use Z: \\10.176.26.59\apps /user:global\85144917 "Start2025!@"
+        net use Z: \\10.176.26.59\apps /user:global\85144917 "Start2025!@#"
         Copy-Item -Path 'Z:\WINDOWS 10\Andrija\Instalacije\vmwaretools' -Destination 'C:\temp\ansible\vmwaretools' -Recurse -Force
         net use Z: /delete
       args:

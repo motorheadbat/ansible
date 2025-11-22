@@ -1,6 +1,6 @@
 ---
 - name: Install all updates and reboot as many times as needed
-  hosts: Test
+  hosts: All
   gather_facts: no
 
   tasks:

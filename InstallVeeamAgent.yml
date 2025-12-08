@@ -1,10 +1,10 @@
 ---
-- name: Install VMware Tools silently without reboot
+- name: Install Veeam Agent silently without reboot
   hosts: VeeamAgent
   gather_facts: no
 
   tasks:
-    - name: Run VMware Tools setup silently without reboot
+    - name: Run Veeam Agent setup silently without reboot
       win_shell: |
         $setupPath = 'C:\temp\ansible\veeam\setup.exe'
         Start-Process -FilePath $setupPath -ArgumentList '/S /v"/qn REBOOT=ReallySuppress"' -Wait

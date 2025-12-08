@@ -7,6 +7,6 @@
     - name: Run Veeam Agent setup silently without reboot
       win_shell: |
         $setupPath = 'C:\temp\ansible\veeam\setup.exe'
-        Start-Process -FilePath $setupPath -ArgumentList '/S /v"/qn REBOOT=ReallySuppress"' -Wait
+        Start-Process -FilePath $setupPath -ArgumentList '/silent /accepteula /acceptthirdpartylicenses /acceptlicensingpolicy /acceptrequiredsoftware /noreboot' -Wait
       args:
         executable: powershell.exe
